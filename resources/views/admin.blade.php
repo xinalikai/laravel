@@ -6,21 +6,29 @@
 <section>
     <h2>Управление статьями</h2>
 
-    @forelse ($articles as $article)
-        <div class="block">
-            <h3>{{ $article->title }}</h3>
-            <p class="meta">
-                Автор: {{ $article->author }} |
-                Категория: {{ $article->category->name }} |
-                Статус: {{ $article->is_blocked ? 'заблокирована' : 'активна' }}
-            </p>
-            <button class="btn-edit" type="button">Редактировать</button>
-            <button class="btn-block" type="button">Блокировать</button>
-            <button class="btn-delete" type="button">Удалить</button>
-        </div>
-    @empty
-        <p>Статей нет.</p>
-    @endforelse
+    <div class="block">
+        <h3>Открытие нового телескопа</h3>
+        <p class="meta">Автор: Иван Петров | Категория: Космос | Статус: активна</p>
+        <button class="btn-edit" type="button">Редактировать</button>
+        <button class="btn-block" type="button">Блокировать</button>
+        <button class="btn-delete" type="button">Удалить</button>
+    </div>
+
+    <div class="block">
+        <h3>Прорыв в медицине</h3>
+        <p class="meta">Автор: Анна Смирнова | Категория: Медицина | Статус: активна</p>
+        <button class="btn-edit" type="button">Редактировать</button>
+        <button class="btn-block" type="button">Блокировать</button>
+        <button class="btn-delete" type="button">Удалить</button>
+    </div>
+
+    <div class="block">
+        <h3>Новый язык программирования</h3>
+        <p class="meta">Автор: Сергей Иванов | Категория: IT | Статус: активна</p>
+        <button class="btn-edit" type="button">Редактировать</button>
+        <button class="btn-block" type="button">Блокировать</button>
+        <button class="btn-delete" type="button">Удалить</button>
+    </div>
 </section>
 
 <section>

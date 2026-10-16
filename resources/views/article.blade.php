@@ -1,23 +1,23 @@
 @extends('layouts.app')
 
-@section('title', $article->title)
+@section('title', $text->heading)
 
 @section('content')
 <section>
-    <h2>{{ $article->title }}</h2>
+    <h2>{{ $text->heading }}</h2>
 
     <p class="meta">
-        {{ $article->category->name }} |
-        {{ $article->author }} |
-        {{ $article->created_at->format('d.m.Y') }}
+        {{ $text->category->name }} |
+        {{ $text->author?->login ?? 'Редакция' }} |
+        {{ $text->created_at->format('d.m.Y') }}
     </p>
 
     <div class="block">
-        {!! nl2br(e($article->content)) !!}
+        {!! nl2br(e($text->text)) !!}
     </div>
 
     <p style="margin-top: 20px;">
-        <a href="{{ route('home') }}" class="back-link">← Назад к новостям</a>
+        <a href="{{ route('home') }}" class="back-link">← Назад</a>
     </p>
 </section>
 @endsection

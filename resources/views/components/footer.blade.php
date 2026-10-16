@@ -1,14 +1,14 @@
 <footer>
     <div>
         <h4>О сайте</h4>
-        <p>Новостной портал на Laravel. Лабораторная работа №1.</p>
+        <p>Новостной портал на Laravel. Лабораторная работа №2.</p>
     </div>
     <div>
         <h4>Разделы</h4>
         <p>
             <a href="{{ route('home') }}">Главная</a>
+            <a href="{{ route('categories') }}">Категории</a>
             <a href="{{ route('journalist') }}">Журналист</a>
-            <a href="{{ route('admin') }}">Админ</a>
         </p>
     </div>
     <div>

@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Article;
+use App\Models\Text;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $articles = Article::with('category')
-            ->where('is_blocked', false)
+        $texts = Text::with(['category', 'author'])
             ->latest()
-            ->get();
+            ->paginate(5);
 
-        return view('index', compact('articles'));
+        return view('index', compact('texts'));
     }
 }
