@@ -242,3 +242,22 @@ footer a:hover {
     background: #3498db;
     color: #fff;
 }
+
+/* Ссылка-кнопка «Редактировать» */
+a.btn-edit {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+    background: #3498db;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin: 8px 6px 0 0;
+}
+
+a.btn-edit:hover {
+    opacity: 0.85;
+    color: #fff;
+    text-decoration: none;
+}

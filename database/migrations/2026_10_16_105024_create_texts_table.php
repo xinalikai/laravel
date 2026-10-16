@@ -9,14 +9,15 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+public function up(): void
 {
     Schema::create('texts', function (Blueprint $table) {
         $table->id();
         $table->string('heading');
         $table->text('text');
-        $table->foreignId('category_id')->constrained()->restrictOnDelete();
-        $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+        $table->foreignId('category_id')->constrained('categories')->restrictOnDelete();
+        $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
+        $table->boolean('is_blocked')->default(false);
         $table->timestamps();
     });
 }

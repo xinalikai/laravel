@@ -8,10 +8,11 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $texts = Text::with(['category', 'author'])
-            ->latest()
-            ->paginate(5);
+    $texts = Text::with(['category', 'author'])
+        ->where('is_blocked', false)
+        ->latest()
+        ->paginate(5);
 
-        return view('index', compact('texts'));
+    return view('index', compact('texts'));
     }
 }

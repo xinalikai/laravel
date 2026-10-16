@@ -16,26 +16,30 @@ class RegisterController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $data = $request->validate([
-            'login'    => ['required', 'string', 'max:255', 'unique:users,login', 'min:3'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
-        ], [
-            'login.required'    => 'Введите логин',
-            'login.unique'      => 'Такой логин уже занят',
-            'login.min'         => 'Логин должен быть не короче 3 символов',
-            'password.required' => 'Введите пароль',
-            'password.min'      => 'Пароль должен быть не короче 6 символов',
-            'password.confirmed'=> 'Пароли не совпадают',
-        ]);
+{
+    $data = $request->validate([
+        'login'    => ['required', 'string', 'max:255', 'unique:users,login', 'min:3'],
+        'password' => ['required', 'string', 'min:6', 'confirmed'],
+    ], [
+        'login.required'    => 'Введите логин',
+        'login.unique'      => 'Такой логин уже занят',
+        'login.min'         => 'Логин должен быть не короче 3 символов',
+        'password.required' => 'Введите пароль',
+        'password.min'      => 'Пароль должен быть не короче 6 символов',
+        'password.confirmed'=> 'Пароли не совпадают',
+    ]);
 
-        $user = User::create([
-            'login'    => $data['login'],
-            'password' => Hash::make($data['password']),
-        ]);
+    // Находим роль reader
+    $readerRole = \App\Models\Role::where('name', 'reader')->first();
 
-        Auth::login($user);
+    $user = User::create([
+        'login'    => $data['login'],
+        'password' => Hash::make($data['password']),
+        'role_id'  => $readerRole?->id,   // <- присваиваем роль
+    ]);
 
-        return redirect()->route('home')->with('success', 'Вы зарегистрированы');
-    }
+    Auth::login($user);
+
+    return redirect()->route('home')->with('success', 'Вы зарегистрированы');
+}
 }

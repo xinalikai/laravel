@@ -6,52 +6,81 @@
 <section>
     <h2>Управление статьями</h2>
 
-    <div class="block">
-        <h3>Открытие нового телескопа</h3>
-        <p class="meta">Автор: Иван Петров | Категория: Космос | Статус: активна</p>
-        <button class="btn-edit" type="button">Редактировать</button>
-        <button class="btn-block" type="button">Блокировать</button>
-        <button class="btn-delete" type="button">Удалить</button>
-    </div>
+    @if (session('success'))
+        <div class="block" style="border-left-color:#27ae60; background:#eafaf1;">
+            {{ session('success') }}
+        </div>
+    @endif
 
-    <div class="block">
-        <h3>Прорыв в медицине</h3>
-        <p class="meta">Автор: Анна Смирнова | Категория: Медицина | Статус: активна</p>
-        <button class="btn-edit" type="button">Редактировать</button>
-        <button class="btn-block" type="button">Блокировать</button>
-        <button class="btn-delete" type="button">Удалить</button>
-    </div>
+    @if (session('error'))
+        <div class="block" style="border-left-color:#e74c3c; background:#fdecea;">
+            {{ session('error') }}
+        </div>
+    @endif
 
-    <div class="block">
-        <h3>Новый язык программирования</h3>
-        <p class="meta">Автор: Сергей Иванов | Категория: IT | Статус: активна</p>
-        <button class="btn-edit" type="button">Редактировать</button>
-        <button class="btn-block" type="button">Блокировать</button>
-        <button class="btn-delete" type="button">Удалить</button>
-    </div>
+    @forelse ($texts as $text)
+        <div class="block">
+            <h3>{{ $text->heading }}</h3>
+            <p class="meta">
+                Автор: {{ $text->author?->login ?? '—' }} |
+                Категория: {{ $text->category->name }} |
+                Статус:
+                @if ($text->is_blocked)
+                    <span style="color:#e74c3c;">заблокирована</span>
+                @else
+                    <span style="color:#27ae60;">активна</span>
+                @endif
+            </p>
+
+            <a href="{{ route('admin.edit', $text->id) }}"
+               class="btn-edit"
+               style="text-decoration:none; display:inline-block;">Редактировать</a>
+
+            <form action="{{ route('admin.block', $text->id) }}" method="POST" style="display:inline;">
+                @csrf
+                @method('PATCH')
+                <button class="btn-block" type="submit">
+                    {{ $text->is_blocked ? 'Разблокировать' : 'Блокировать' }}
+                </button>
+            </form>
+
+            <form action="{{ route('admin.destroy', $text->id) }}" method="POST"
+                  style="display:inline;"
+                  onsubmit="return confirm('Удалить статью «{{ $text->heading }}»?');">
+                @csrf
+                @method('DELETE')
+                <button class="btn-delete" type="submit">Удалить</button>
+            </form>
+        </div>
+    @empty
+        <p>Статей нет.</p>
+    @endforelse
 </section>
 
 <section>
-    <h2>Роли пользователей</h2>
+    <h2>Пользователи и роли</h2>
 
-    <form class="editor-form" onsubmit="return false;">
+    @foreach ($users as $user)
         <div class="block">
-            <label for="user">Пользователь</label>
-            <select id="user" name="user">
-                <option>Иван Петров</option>
-                <option>Анна Смирнова</option>
-                <option>Сергей Иванов</option>
-            </select>
+            <h3>{{ $user->login }}</h3>
+            <p class="meta">Текущая роль: {{ $user->role?->name ?? '—' }}</p>
 
-            <label for="role">Роль</label>
-            <select id="role" name="role">
-                <option value="reader">Читатель</option>
-                <option value="journalist">Журналист</option>
-                <option value="admin">Администратор</option>
-            </select>
+            <form action="{{ route('admin.role', $user->id) }}" method="POST"
+                  style="display:flex; gap:10px; align-items:center; margin-top:10px;">
+                @csrf
+                @method('PATCH')
 
-            <button type="submit">Изменить роль</button>
+                <select name="role_id" style="padding:6px 10px; border-radius:6px;">
+                    @foreach ($roles as $role)
+                        <option value="{{ $role->id }}" @selected($user->role_id == $role->id)>
+                            {{ $role->name }}
+                        </option>
+                    @endforeach
+                </select>
+
+                <button type="submit" class="btn-edit">Сменить роль</button>
+            </form>
         </div>
-    </form>
+    @endforeach
 </section>
 @endsection

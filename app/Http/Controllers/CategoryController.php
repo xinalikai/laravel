@@ -41,14 +41,15 @@ class CategoryController extends Controller
 
     // Статьи одной категории
     public function show(int $id)
-    {
-        $category = Category::findOrFail($id);
+{
+    $category = Category::findOrFail($id);
 
-        $texts = $category->texts()
-            ->with('author')
-            ->latest()
-            ->paginate(5);
+    $texts = $category->texts()
+        ->with('author')
+        ->where('is_blocked', false)
+        ->latest()
+        ->paginate(5);
 
-        return view('category', compact('category', 'texts'));
-    }
+    return view('category', compact('category', 'texts'));
+}
 }

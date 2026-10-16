@@ -12,11 +12,11 @@
         </div>
     @endif
 
-    @auth
-        <p style="margin-bottom: 20px;">
-            <a href="{{ route('categories.create') }}" class="back-link">+ Добавить категорию</a>
-        </p>
-    @endauth
+    @if (auth()->check() && auth()->user()->isJournalist())
+    <p style="margin-bottom: 20px;">
+        <a href="{{ route('categories.create') }}" class="back-link">+ Добавить категорию</a>
+    </p>
+    @endif
 
     @forelse ($categories as $category)
         <div class="block">
